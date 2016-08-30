@@ -44,5 +44,8 @@
     "name": "Forbes Lindesay",
     "url": "http://github.com/ForbesLindesay"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "engines": {
+    "node": "6.5.0"
+  }
 }
