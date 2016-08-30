@@ -29,7 +29,7 @@ export function get(...args) {
       }
       clientToUse.get(...args).done(resolve, err => {
         if (err.statusCode === 403) {
-          console.log('Rate limit exceeded, waiting 5 seconds then trying again');
+          console.warn('Rate limit exceeded, waiting 5 seconds then trying again');
           setTimeout(retry, 5000);
         } else {
           reject(err);

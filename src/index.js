@@ -2,6 +2,7 @@ import passport from 'passport';
 import {Strategy as GitHubStrategy} from 'passport-github2';
 import cookieSession from 'cookie-session';
 import express from 'express';
+import getLog from './console';
 import {saveUser, getUsers} from './db';
 import {addToken} from './read-client';
 import processUser from './process-user';
@@ -61,7 +62,8 @@ app.get('/', (req, res, next) => {
   if (!req.isAuthenticated()) {
     return res.redirect('/auth/github');
   }
-  res.send('Processing Repositories');
+  res.writeHead(200, {'Content-Type': 'text/plain'});
+  res.end(getLog().filter(Boolean).join('\n'));
 });
 
-app.listen(3000);
+app.listen(process.env.PORT || 3000);
