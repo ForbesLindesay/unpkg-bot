@@ -5,6 +5,7 @@ import gethub from 'gethub';
 import rimraf from 'rimraf';
 import lsr from 'lsr';
 import throat from 'throat';
+import {pushError} from './db';
 
 const client = github({version: 3, auth: process.env.GITHUB_BOT_TOKEN});
 
@@ -54,19 +55,19 @@ function codemodRepo(fullName) {
         console.log('codemod resulted in no changes');
         return;
       }
-      console.log('forking');
+      console.log('forking ' + fullName);
       return client.fork(owner, name).then(() => {
-        console.log('branching');
+        console.log('branching ' + fullName);
         return client.branch('npmcdn-to-unpkg-bot', name, 'master', 'npmcdn-to-unpkg');
       }).then(() => {
-        console.log('committing');
+        console.log('committing ' + fullName);
         return client.commit('npmcdn-to-unpkg-bot', name, {
           branch: 'npmcdn-to-unpkg',
           message: 'Replace npmcdn.com with unpkg.com',
           updates,
         });
       }).then(() => {
-        console.log('submitting pull request');
+        console.log('submitting pull request ' + fullName);
         return client.pull(
           {user: 'npmcdn-to-unpkg-bot', repo: name, branch: 'npmcdn-to-unpkg'},
           {user: owner, repo: name},
@@ -82,6 +83,10 @@ function codemodRepo(fullName) {
         console.log('codemod complete');
       });
     });
+  }).then(null, err => {
+    console.error('Error processing ' + fullName);
+    console.error(err.stack);
+    return pushError(owner, name, err.message || err);
   });
 }
 

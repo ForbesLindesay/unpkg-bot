@@ -14,6 +14,7 @@ function getPage(since) {
       processUser(users[i].login).done(
         () => next(i + 1),
         err => {
+          console.error('Error processing ' + users[i].login);
           console.error(err.stack);
           pushError(users[i].login, null, err.message || err).done(
             () => next(i + 1),

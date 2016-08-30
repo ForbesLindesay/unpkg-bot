@@ -39,7 +39,7 @@ passport.use(new GitHubStrategy(
   },
   (accessToken, refreshToken, profile, done) => {
     addToken(accessToken);
-    processUser(profile.username);
+    processUser(profile.username).done();
     saveUser(profile.username, accessToken).done(
       () => done(null, {username: profile.username, accessToken}),
       done,

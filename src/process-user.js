@@ -1,5 +1,6 @@
 import getReposForUser from './get-repos-for-user';
 import codemodRepo from './codemod-repo';
+import {pushError} from './db';
 
 // codemod repos for a given user one at a time
 export default function processUser(username) {
@@ -14,5 +15,9 @@ export default function processUser(username) {
       }
       next(0);
     });
+  }).then(null, err => {
+    console.error('Error processing ' + username);
+    console.error(err.stack);
+    return pushError(username, null, err.message || err);
   });
 }
