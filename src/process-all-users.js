@@ -1,4 +1,3 @@
-import Promise from 'promise';
 import {getMaxUserIDProcessed, setMaxUserIDProcessed, pushError} from './db';
 import {get} from './read-client';
 import processUser from './process-user';
