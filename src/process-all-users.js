@@ -6,7 +6,7 @@ function getPage(since) {
   get('/users', {since}).done(users => {
     const maxID = users.reduce((id, user) => {
       return Math.max(id, user.id);
-    }, since);
+    }, since || -1);
     function next(i) {
       if (i >= users.length) {
         return setMaxUserIDProcessed(maxID).done(() => getPage(maxID));
