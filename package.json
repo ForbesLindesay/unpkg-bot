@@ -1,0 +1,48 @@
+{
+  "name": "unpkg-bot",
+  "private": true,
+  "version": "0.0.0",
+  "main": "lib/index.js",
+  "description": "Bot to convert npmcdn urls to unpkg",
+  "keywords": [],
+  "files": [
+    "lib/"
+  ],
+  "dependencies": {
+    "babel-runtime": "^6.3.19",
+    "cookie-session": "^2.0.0-alpha.1",
+    "express": "^4.14.0",
+    "gethub": "^2.0.2",
+    "github-basic": "^6.0.0",
+    "lsr": "^1.0.0",
+    "passport": "^0.3.2",
+    "passport-github2": "^0.1.10",
+    "promise": "^7.1.1",
+    "rimraf": "^2.5.4",
+    "then-mongo": "^2.3.2",
+    "throat": "^3.0.0"
+  },
+  "devDependencies": {
+    "babel-cli": "*",
+    "babel-preset-forbeslindesay": "*",
+    "babel-register": "^6.14.0",
+    "eslint": "*",
+    "eslint-config-forbeslindesay": "*",
+    "testit": "*"
+  },
+  "scripts": {
+    "deploy": "npm install && npm run build && npm prune --prod && npm i heroku-release && heroku-release --app unpkg-bot",
+    "build": "babel src --out-dir lib",
+    "lint": "eslint src",
+    "test": "babel-node test/index.js && npm run lint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ForbesLindesay/unpkg-bot.git"
+  },
+  "author": {
+    "name": "Forbes Lindesay",
+    "url": "http://github.com/ForbesLindesay"
+  },
+  "license": "MIT"
+}
