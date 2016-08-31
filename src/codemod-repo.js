@@ -21,7 +21,11 @@ client.exists = function (owner, repo) {
   );
 };
 
+const blackList = ['qdot/gecko-hg'];
 function codemodRepo(fullName) {
+  if (blackList.includes(fullName)) {
+    return Promise.resolve(null);
+  }
   const [owner, name] = fullName.split('/');
 
   return client.exists('npmcdn-to-unpkg-bot', name).then(exists => {
