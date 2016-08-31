@@ -50,6 +50,11 @@ function codemodRepo(fullName) {
                 content: newContent,
               };
             }
+          }, err => {
+            if (err.code === 'ENOENT') {
+              return;
+            }
+            throw err;
           });
         }
       }));
