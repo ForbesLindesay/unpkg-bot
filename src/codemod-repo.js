@@ -21,7 +21,10 @@ client.exists = function (owner, repo) {
   );
 };
 
-const blackList = ['qdot/gecko-hg'];
+const blackList = [
+  'qdot/gecko-hg',
+  'angular/code.angularjs.org',
+];
 function codemodRepo(fullName) {
   if (blackList.includes(fullName)) {
     return Promise.resolve(null);
