@@ -57,6 +57,8 @@ function codemodRepo(fullName) {
       }
       console.log('forking ' + fullName);
       return client.fork(owner, name).then(() => {
+        return new Promise(resolve => setTimeout(resolve, 10000));
+      }).then(() => {
         console.log('branching ' + fullName);
         return client.branch('npmcdn-to-unpkg-bot', name, 'master', 'npmcdn-to-unpkg');
       }).then(() => {
