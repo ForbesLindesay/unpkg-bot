@@ -22,7 +22,7 @@ export function get(...args) {
       }
       const clientWeights = {};
       for (let i = 0; i < clients.length; i++) {
-        clientWeights[i] = clients[i].rateLimit.remaining;
+        clientWeights[i] = clients[i].rateLimit.remaining || 1;
       }
       const clientToUse = clients[deck.pick(clientWeights)];
       clientToUse.get(...args).done(resolve, err => {
