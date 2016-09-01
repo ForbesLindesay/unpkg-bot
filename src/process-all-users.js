@@ -1,6 +1,7 @@
 import {getMaxUserIDProcessed, setMaxUserIDProcessed, pushError} from './db';
 import {get} from './read-client';
 import processUser from './process-user';
+import {error} from './console';
 
 function getPage(since) {
   get('/users', {since}).done(users => {
@@ -14,8 +15,7 @@ function getPage(since) {
       processUser(users[i].login).done(
         () => next(i + 1),
         err => {
-          console.error('Error processing ' + users[i].login);
-          console.error(err.stack);
+          error('Error processing ' + users[i].login, err.stack);
           pushError(users[i].login, null, err.message || err).done(
             () => next(i + 1),
           );

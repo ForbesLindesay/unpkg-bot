@@ -5,6 +5,7 @@ import gethub from 'gethub';
 import rimraf from 'rimraf';
 import lsr from 'lsr';
 import throat from 'throat';
+import {log, error} from './console';
 import {pushError} from './db';
 
 const client = github({version: 3, auth: process.env.GITHUB_BOT_TOKEN});
@@ -20,6 +21,22 @@ client.exists = function (owner, repo) {
     () => false,
   );
 };
+
+if (process.env.NODE_ENV !== 'production') {
+  console.log('===== DRY RUN =====');
+  console.log('');
+  console.log('To actually run code-mod, set NODE_ENV=production');
+  console.log('');
+  client.exists = () => Promise.resolve(false);
+  [
+    'fork',
+    'branch',
+    'commit',
+    'pull',
+  ].forEach(method => {
+    client[method] = () => Promise.resolve(null);
+  });
+}
 
 const blackList = [
   'qdot/gecko-hg',
@@ -37,14 +54,15 @@ function codemodRepo(fullName) {
     if (exists) {
       return;
     }
-    console.log('Code modding ' + fullName);
+    log('Code Modding', fullName);
     return rm(directory).then(() => {
-      console.log('downloading ' + fullName);
+      log('Downloading', fullName);
       return gethub(owner, name, 'master', directory);
     }).then(() => {
-      console.log('fetched ' + fullName);
+      log('Fetched', fullName);
       return lsr(directory);
     }).then(entries => {
+      log('Processing Files', fullName);
       return Promise.all(entries.map(entry => {
         if (entry.isFile()) {
           return readFile(entry.fullPath, 'utf8').then(content => {
@@ -66,24 +84,24 @@ function codemodRepo(fullName) {
     }).then(updates => {
       updates = updates.filter(Boolean);
       if (updates.length === 0) {
-        console.log('codemod resulted in no changes');
+        log('No Changes Made', fullName);
         return;
       }
-      console.log('forking ' + fullName);
+      log('Forking', fullName);
       return client.fork(owner, name).then(() => {
         return new Promise(resolve => setTimeout(resolve, 10000));
       }).then(() => {
-        console.log('branching ' + fullName);
+        log('Branching', fullName);
         return client.branch('npmcdn-to-unpkg-bot', name, 'master', 'npmcdn-to-unpkg');
       }).then(() => {
-        console.log('committing ' + fullName);
+        log('Committing', fullName);
         return client.commit('npmcdn-to-unpkg-bot', name, {
           branch: 'npmcdn-to-unpkg',
           message: 'Replace npmcdn.com with unpkg.com',
           updates,
         });
       }).then(() => {
-        console.log('submitting pull request ' + fullName);
+        log('Submitting Pull Request', fullName);
         return client.pull(
           {user: 'npmcdn-to-unpkg-bot', repo: name, branch: 'npmcdn-to-unpkg'},
           {user: owner, repo: name},
@@ -96,12 +114,11 @@ function codemodRepo(fullName) {
           },
         );
       }).then(() => {
-        console.log('codemod complete');
+        log('Codemod Complete', fullName);
       });
     });
   }).then(null, err => {
-    console.error('Error processing ' + fullName);
-    console.error(err.stack);
+    error('Error processing ' + fullName, err.stack);
     return pushError(owner, name, err.message || err);
   });
 }

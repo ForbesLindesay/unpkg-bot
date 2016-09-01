@@ -1,19 +1,41 @@
-const log = [];
+let index = 0;
+const logEntries = [];
 for (let i = 0; i < 500; i++) {
-  log.push('');
+  logEntries.push(null);
 }
-function method(name) {
-  const base = console[name];
-  console[name] = (message, ...args) => {
-    log.shift();
-    log.push((new Date()).toISOString() + ' ' + name.toUpperCase() + ': ' + message);
-    base.call(console, message, ...args);
-  };
-}
-method('log');
-method('warn');
-method('error');
 
-export default function getLog() {
-  return log;
+export function getLog() {
+  return logEntries;
+}
+export function log(name, message) {
+  logEntries.shift();
+  logEntries.push({
+    index: index++,
+    date: (new Date()).toISOString(),
+    level: 'log',
+    name,
+    message,
+  });
+  console.log(name + ': ' + message);
+}
+export function warn(message) {
+  logEntries.shift();
+  logEntries.push({
+    index: index++,
+    date: (new Date()).toISOString(),
+    level: 'warn',
+    message,
+  });
+  console.warn(message);
+}
+export function error(context, stack) {
+  logEntries.shift();
+  logEntries.push({
+    index: index++,
+    date: (new Date()).toISOString(),
+    level: 'error',
+    context,
+    stack,
+  });
+  console.error(context + '\n' + stack);
 }

@@ -1,6 +1,7 @@
 import github from 'github-basic';
 import Promise from 'promise';
 import deck from 'deck';
+import {warn} from './console';
 
 const tokens = [];
 const clients = [];
@@ -11,12 +12,15 @@ export function addToken(token) {
     clients.push(github({version: 3, auth: token}));
   }
 }
+export function getRateLimitStatus() {
+  return clients.map(client => client.rateLimit);
+}
 
 export function get(...args) {
   return new Promise((resolve, reject) => {
     function retry() {
       if (clients.length === 0) {
-        console.warn('No clients available, waiting for a client to be added');
+        warn('No clients available, waiting for a client to be added');
         setTimeout(retry, 5000);
         return;
       }
@@ -27,8 +31,8 @@ export function get(...args) {
       const clientToUse = clients[deck.pick(clientWeights)];
       clientToUse.get(...args).done(resolve, err => {
         if (err.statusCode === 403) {
-          console.warn('Rate limit exceeded, waiting 5 seconds then trying again');
-          setTimeout(retry, 5000);
+          warn('Rate limit exceeded, waiting 1 second then trying again');
+          setTimeout(retry, 1000);
         } else {
           reject(err);
         }
