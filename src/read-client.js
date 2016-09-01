@@ -35,6 +35,11 @@ export function get(...args) {
           console.error(err.stack);
           console.dir(clientToUse);
           console.error('=====================');
+          warn('Client token seems to have expired!');
+          const index = clients.indexOf(clientToUse);
+          if (index !== -1) {
+            clients.splice(index, 1);
+          }
           setTimeout(retry, 1000);
         } else if (err.statusCode === 403) {
           warn('Rate limit exceeded, waiting 1 second then trying again');
