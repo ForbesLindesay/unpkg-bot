@@ -30,7 +30,13 @@ export function get(...args) {
       }
       const clientToUse = clients[deck.pick(clientWeights)];
       clientToUse.get(...args).done(resolve, err => {
-        if (err.statusCode === 403) {
+        if (err.statusCode === 401) {
+          console.error('=====================');
+          console.error(err.stack);
+          console.dir(clientTouse);
+          console.error('=====================');
+          setTimeout(retry, 1000);
+        } else if (err.statusCode === 403) {
           warn('Rate limit exceeded, waiting 1 second then trying again');
           setTimeout(retry, 1000);
         } else {
