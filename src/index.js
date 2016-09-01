@@ -88,46 +88,44 @@ app.get('/', (req, res, next) => {
   if (!req.isAuthenticated()) {
     return res.redirect('/auth/github');
   }
-  getMaxUserIDProcessed().done(maxUserIDProcessed => {
-    res.send(
-      `
-        <meta charset="utf-8">
-        <title>Code Mod</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <style>
+  res.send(
+    `
+      <meta charset="utf-8">
+      <title>Code Mod</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <style>
+        .bar-chart {
+          display: flex;
+          flex-direction: column;
+          height: 600px;
+        }
+        .bar-chart-bar {
+          display: flex;
+          flex-direction: row;
+          flex-basis: 0;
+          padding: 2px;
+          flex-grow: 1;
+        }
+        .bar-chart-stats {
+          display: none;
+        }
+        @media (min-width: 1000px) {
           .bar-chart {
-            display: flex;
-            flex-direction: column;
-            height: 600px;
+            flex-direction: row;
+            height: 150px;
           }
           .bar-chart-bar {
-            display: flex;
-            flex-direction: row;
-            flex-basis: 0;
-            padding: 2px;
-            flex-grow: 1;
+            flex-direction: column;
           }
           .bar-chart-stats {
-            display: none;
+            display: block;
           }
-          @media (min-width: 1000px) {
-            .bar-chart {
-              flex-direction: row;
-              height: 150px;
-            }
-            .bar-chart-bar {
-              flex-direction: column;
-            }
-            .bar-chart-stats {
-              display: block;
-            }
-          }
-        </style>
-        <div id="container"></div>
-        <script src="/client/${hash}.js"></script>
-      `
-    );
-  });
+        }
+      </style>
+      <div id="container"></div>
+      <script src="/client/${hash}.js"></script>
+    `
+  );
 });
 
 app.listen(process.env.PORT || 3000);
