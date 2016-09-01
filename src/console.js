@@ -16,7 +16,6 @@ export function log(name, message) {
     name,
     message,
   });
-  console.log(name + ': ' + message);
 }
 export function warn(message) {
   logEntries.shift();
@@ -26,7 +25,6 @@ export function warn(message) {
     level: 'warn',
     message,
   });
-  console.warn(message);
 }
 export function error(context, stack) {
   logEntries.shift();
