@@ -115,7 +115,7 @@ const App = React.createClass({
     this._poll();
   },
   _poll() {
-    request('get', '/ajax').getBody('utf8').then(JSON.parse).then(status => {
+    request('get', '/ajax').getBody('utf8').then(JSON.parse).done(status => {
       this.setState({
         loading: false,
         maxUserIDProcessed: status.maxUserIDProcessed,

@@ -14,15 +14,14 @@ function getPage(since) {
       }
       processUser(users[i].login).done(
         () => next(i + 1),
-        err => {
-          error('Error processing ' + users[i].login, err.stack);
-          pushError(users[i].login, null, err.message || err).done(
-            () => next(i + 1),
-          );
-        }
       );
     }
     next(0);
+  }, err => {
+    error('Error getting users', err.stack);
+    pushError(null, null, err.message || err).done(
+      () => setTimeout(() => getPage(since), 5000),
+    );
   });
 }
 getMaxUserIDProcessed().done(getPage);
