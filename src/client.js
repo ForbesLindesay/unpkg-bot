@@ -133,7 +133,7 @@ const App = React.createClass({
           }).slice().reverse().concat(this.state.log)
         ),
       });
-      setTimeout(this._poll, 1000);
+      setTimeout(this._poll, 3000);
     }, this._poll);
   },
   render() {
