@@ -25,6 +25,7 @@ const blackList = [
   'qdot/gecko-hg',
   'angular/code.angularjs.org',
   'Belxjander/tenfourfox',
+  'tijuca/icedove',
 ];
 function codemodRepo(fullName) {
   if (blackList.includes(fullName)) {
