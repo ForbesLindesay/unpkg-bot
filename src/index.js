@@ -101,7 +101,7 @@ app.get('/', (req, res, next) => {
         }
         .bar-chart-bar {
           display: flex;
-          flex-direction: row;
+          flex-direction: row-reverse;
           flex-basis: 0;
           padding: 2px;
           flex-grow: 1;
