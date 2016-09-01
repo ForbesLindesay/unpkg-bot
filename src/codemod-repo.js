@@ -24,6 +24,7 @@ client.exists = function (owner, repo) {
 const blackList = [
   'qdot/gecko-hg',
   'angular/code.angularjs.org',
+  'Belxjander/tenfourfox',
 ];
 function codemodRepo(fullName) {
   if (blackList.includes(fullName)) {
