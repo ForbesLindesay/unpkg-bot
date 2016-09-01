@@ -26,14 +26,20 @@ export function warn(message) {
     message,
   });
 }
-export function error(context, stack) {
-  logEntries.shift();
-  logEntries.push({
-    index: index++,
-    date: (new Date()).toISOString(),
-    level: 'error',
-    context,
-    stack,
-  });
-  console.error(context + '\n' + stack);
+export function error(context, stack = '') {
+  if (
+    /The listed users and repositories cannot be searched/.test(stack)
+  ) {
+    warn('The listed user cannot be searched');
+  } else {
+    logEntries.shift();
+    logEntries.push({
+      index: index++,
+      date: (new Date()).toISOString(),
+      level: 'error',
+      context,
+      stack,
+    });
+    console.error(context + '\n' + stack);
+  }
 }
