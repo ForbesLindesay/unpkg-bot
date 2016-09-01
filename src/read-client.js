@@ -33,7 +33,7 @@ export function get(...args) {
         if (err.statusCode === 401) {
           console.error('=====================');
           console.error(err.stack);
-          console.dir(clientTouse);
+          console.dir(clientToUse);
           console.error('=====================');
           setTimeout(retry, 1000);
         } else if (err.statusCode === 403) {
