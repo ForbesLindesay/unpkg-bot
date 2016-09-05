@@ -43,6 +43,7 @@ const blackList = [
   'angular/code.angularjs.org',
   'Belxjander/tenfourfox',
   'tijuca/icedove',
+  'jsdelivr/jsdelivr',
 ];
 function codemodRepo(fullName) {
   if (blackList.includes(fullName)) {
