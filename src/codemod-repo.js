@@ -44,6 +44,7 @@ const blackList = [
   'Belxjander/tenfourfox',
   'tijuca/icedove',
   'jsdelivr/jsdelivr',
+  'andrit/uiUXWebsite',
 ];
 function codemodRepo(fullName) {
   if (blackList.includes(fullName)) {
