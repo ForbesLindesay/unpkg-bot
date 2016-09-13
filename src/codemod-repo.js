@@ -45,6 +45,7 @@ const blackList = [
   'tijuca/icedove',
   'jsdelivr/jsdelivr',
   'andrit/uiUXWebsite',
+  'WhoAmID/angular-whoamid',
 ];
 function codemodRepo(fullName) {
   if (blackList.includes(fullName)) {
