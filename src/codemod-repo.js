@@ -46,6 +46,7 @@ const blackList = [
   'jsdelivr/jsdelivr',
   'andrit/uiUXWebsite',
   'WhoAmID/angular-whoamid',
+  'rubber-duckies/the-frank-tank',
 ];
 function codemodRepo(fullName) {
   if (blackList.includes(fullName)) {
