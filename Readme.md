@@ -1,5 +1,7 @@
 # unpkg-bot
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/ForbesLindesay/unpkg-bot.svg)](https://greenkeeper.io/)
+
 Bot to convert npmcdn urls to unpkg.
 
 Log in to https://unpkg-bot.herokuapp.com/ to:
